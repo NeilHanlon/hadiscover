@@ -23,8 +23,8 @@ func GetBackends(client *etcd.Client, service, backendName string) ([]Backend, e
 		backends := make([]Backend, len(resp.Node.Nodes))
 		for index, element := range resp.Node.Nodes {
 
-			key := (*element).Key // key format is: /service/IP:PORT
-			service := strings.Split(key[strings.LastIndex(key, "/")+1:], ":")
+			val := (*element).Value // val format is: IP:PORT
+                        service := strings.Split(val[strings.LastIndex(val, "/")+1:], ":")
 
 			backends[index] = Backend{Name: fmt.Sprintf("back-%v", index), Ip: service[0], Port: service[1]}
 		}
